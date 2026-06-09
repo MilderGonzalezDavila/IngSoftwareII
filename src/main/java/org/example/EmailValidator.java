@@ -16,7 +16,7 @@ public class EmailValidator {
 
     public boolean isValid(String email) {
         if (email == null) {
-            return false;
+            throw new IllegalArgumentException("The email to validate cannot to be null");
         }
 
         Matcher matcher = PATTERN.matcher(email);

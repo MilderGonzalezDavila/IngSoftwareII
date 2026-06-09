@@ -4,8 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
+import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EmailValidatorTest {
@@ -45,7 +47,23 @@ public class EmailValidatorTest {
         assertValido(valido);
     }
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("testValidateEmailArguments")
+    void testValidatesEmails(String email, boolean expectedResult) {
+        boolean result = emailValido.isValid(email);
+        assertEquals(expectedResult, result);
+    }
+
+    private static Stream<Arguments> testValidateEmailArguments() {
+        return Stream.of(Arguments.of(
+                "usuario@email.com", true),
+                Arguments.of("a@email.com", true),
+                Arguments.of("a@b.com", false),
+                Arguments.of("    ", false)
+                );
+    }
+
+    //@Test
     void testValidarEmail_null(){
         String email = null;
         boolean valido = emailValido.isValid(email);
@@ -67,16 +85,15 @@ public class EmailValidatorTest {
     }
 
     //Reemplaza a
-    // testValidateEmail
+    //testValidateEmail
     //testNotValidateEmail
 
-    /*
     @Test
     void testThrowIllegalArgumentException_emailNull_TryCatchIdiom(){
         String emailNull = null;
         try{
-            emailValido.IsValid(emailNull);
-            Fail("Should throw  IllegalArgumentException");
+            emailValido.isValid(emailNull);
+            fail("Should throw IllegalArgumentException");
         }
         catch (IllegalArgumentException e){
             assertPreconditionMessage(e);
@@ -86,16 +103,17 @@ public class EmailValidatorTest {
     @Test
     void testThrowIllegalArgumentException_emailEmpty_assertThrowsMethod(){
         String emailNull = null;
-        Executable exe = () -> emailValid.isValid(emailNull);
+        Executable exe = () -> emailValido.isValid(emailNull);
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, exe);
-        assertPrecondition(e);
+        assertPreconditionMessage(e);
     }
 
-    */
-
     private void assertPreconditionMessage(IllegalArgumentException e){
-        assertEquals("The email to validate cannot to be null", e.getMessage(),
-                "The message of the exception is not the expected");
+        assertEquals(
+                "The email to validate cannot to be null",
+                e.getMessage(),
+                "The message of the exception is not the expected"
+        );
     }
 
     private void assertValido(boolean valido){
