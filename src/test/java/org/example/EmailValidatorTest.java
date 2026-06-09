@@ -3,33 +3,44 @@ package org.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EmailValidatorTest {
 
     private EmailValidator emailValido;
+
     @BeforeEach
-    void Inicializar(){
+    void Inicializar() {
         emailValido = new EmailValidator();
     }
 
-    @Test
-    void testValidarEmailCorrecto(){
+    //@Test
+    void testValidarEmailCorrecto() {
         String email = "recorcholis@gmail.com";
         boolean valido = emailValido.isValid(email);
         assertValido(valido);
     }
 
-    @Test
-    void testValidarEmail_UnSoloCaracter(){
+    //@Test
+    void testValidarEmail_UnSoloCaracter() {
         String email = "s@gmail.com";
         boolean valido = emailValido.isValid(email);
         assertValido(valido);
     }
 
-    @Test
+    //@Test
     void testValidarEmail_DominioVariosPuntos() {
         String email = "usuario@unc.edu.pe";
+        boolean valido = emailValido.isValid(email);
+        assertValido(valido);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"recorcholis@gmail.com", "s@gmail.com", "usuario@unc.edu.pe"})
+    void testValidateEmail(String email) {
         boolean valido = emailValido.isValid(email);
         assertValido(valido);
     }
