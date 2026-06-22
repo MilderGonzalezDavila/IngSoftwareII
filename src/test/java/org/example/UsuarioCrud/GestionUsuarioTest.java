@@ -53,6 +53,7 @@ public class GestionUsuarioTest {
         assertEquals("Usuario existente", e.getMessage());
     }
 
+
     //Read
     //1. Usuario null
     //3. Usuario que no existe
@@ -91,8 +92,7 @@ public class GestionUsuarioTest {
     public void Listar_SinUsuarios_RetornaListaVacia()
     {
         List<Usuario> usuarios = gestionUsuario.Listar();
-        assertEquals(new ArrayList<>(), usuarios);
-        assertEquals(0 , usuarios.size());
+        assertTrue( usuarios.isEmpty());
     }
 
     @Test

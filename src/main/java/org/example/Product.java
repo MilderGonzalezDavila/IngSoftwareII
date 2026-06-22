@@ -9,61 +9,85 @@ import java.time.LocalDateTime;
 
 public class Product {
 
-    private final String description;
-    private final double basePrice;
-    private final double vat;
-    private final int units;
-    private final LocalDateTime time;
-    private final LocalDate expirationDate;
+    private final String descripcion;
+    private final double precioBase;
+    private final int impuesto;
+    private final int unidades;
+    private final LocalDate fechaVencimiento;
 
-    public Product(String description, double basePrice, int vat, int units, LocalDateTime time, LocalDate expirationDate) {
-        time = time;
-        ValidarDsc(description);
-        ValidateBp(basePrice);
-        ValidateImp(vat);
+    public Product(String descripcion, double precioBase, int impuesto, int unidades, LocalDate fechaVencimiento) {
+        ValidarDescripcion(descripcion);
+        ValidarPrecioBase(precioBase);
+        ValidarImpuesto(impuesto);
+        ValidarUnidades(unidades);
+        ValidarFechaVencimiento(fechaVencimiento);
 
-        this.description = description;
-        this.basePrice = basePrice;
-        this.vat = vat;
-        this.units = units;
-        this.time = time;
-        this.expirationDate = expirationDate;
-
+        this.descripcion = descripcion;
+        this.precioBase = precioBase;
+        this.impuesto = impuesto;
+        this.unidades = unidades;
+        this.fechaVencimiento = fechaVencimiento;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public double getBasePrice() {
-        return basePrice;
+    public double getPrecioBase() {
+        return precioBase;
     }
 
-    public double getVat() {
-        return vat;
+    public double getImpuesto() {
+        return impuesto;
+    }
+
+    public int getUnidades() {
+        return unidades;
+    }
+
+    public LocalDate getFechaVencimiento() {
+        return fechaVencimiento;
     }
 
     @Override
     public String toString() {
-        return "Product \"" + description + "\"";
+        return "Product \"" + descripcion + "\"";
     }
 
-    private void ValidarDsc(String description){
-        if(StringUtils.isBlank(description)){
-            throw new IllegalArgumentException("Descripcion no puede ser vacia");
+    private void ValidarDescripcion(String descripcion){
+        if(descripcion == null || StringUtils.isBlank(descripcion)){
+            throw new IllegalArgumentException("Descripcion no puede ser null o vacia");
         }
     }
 
-    private void ValidateBp (double bp){
-        if(bp < 0d) {
+    private void ValidarPrecioBase (double precioBase){
+        if(precioBase < 0d) {
             throw new IllegalArgumentException("Precio base no puede ser negativo");
         }
     }
 
-    private void ValidateImp (int imp){
-        if(imp < 0d) {
+    private void ValidarImpuesto(int impuesto){
+        if(impuesto < 0d) {
             throw new IllegalArgumentException("El impuesto no puede ser negativo");
         }
     }
+
+    private void ValidarUnidades(int unidades) {
+        if(unidades <= 0) {
+            throw new IllegalArgumentException("Las unidades deben ser positivas");
+        }
+    }
+
+    private void ValidarFechaVencimiento(LocalDate fechaVencimiento) {
+        if(fechaVencimiento == null){
+            throw new IllegalArgumentException("Fecha de vencimiento no puede ser null");
+        }
+        if(fechaVencimiento.isBefore(LocalDate.now()) || fechaVencimiento.equals(LocalDate.now())){
+            throw new IllegalArgumentException("La fecha de vencimiento debe ser futura");
+        }
+    }
+
+
+
 
 }

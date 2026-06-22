@@ -13,9 +13,9 @@ public class InvoiceLine {
             throw new IllegalArgumentException("product cannot be null");
         }
 
-        this.productDescription = product.getDescription();
-        this.basePrice = product.getBasePrice();
-        this.appliedVat = product.getVat();
+        this.productDescription = product.getDescripcion();
+        this.basePrice = product.getPrecioBase();
+        this.appliedVat = product.getImpuesto();
         this.units = units;
         this.totalPrice = calculateTotalPrice();
     }
